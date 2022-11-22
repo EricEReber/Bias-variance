@@ -1,0 +1,67 @@
+\documentclass[onecolumn,10pt,cleanfoot]{asme2ej}
+
+\usepackage{graphicx} %% for loading jpg figures
+\usepackage{bm}
+\usepackage{nicefrac}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{parskip}
+\usepackage{listings}
+\usepackage{tablefootnote}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{xurl}
+
+\title{Bias variance trade-off comparison of regression models}
+
+%%% first author
+\author{Jonatan H. Hanssen
+    \affiliation{
+	Bachelor Student, Robotics and \\
+	Intelligent Systems\\ \\[-10pt]
+	Department of Informatics\\ \\[-10pt]
+	The faculty of Mathematics and \\
+	Natural Sciences\\ \\[-10pt]
+    Email: jonatahh@ifi.uio.no
+    }
+}
+
+\author{Eric E. Reber
+    \affiliation{
+	Bachelor Student, Robotics and \\
+	Intelligent Systems\\ \\[-10pt]
+	Department of Informatics\\ \\[-10pt]
+	The faculty of Mathematics and \\
+	Natural Sciences\\ \\[-10pt]
+    Email: ericer@ifi.uio.no
+    }
+}
+
+\author{Gregor Kajda
+    \affiliation{
+	Bachelor Student, Robotics and \\
+	Intelligent Systems\\ \\[-10pt]
+	Department of Informatics\\ \\[-10pt]
+	The faculty of Mathematics and \\
+	Natural Sciences\\ \\[-10pt]
+    Email: grzegork@ifi.uio.no
+    }
+}
+
+
+\begin{document}
+
+
+\maketitle
+
+
+\section{Abstract}
+todo
+
+\section{Introduction}
+In regression, we wish to create a general model that provides a low MSE even for data that it was not trained on. To study this attribute, we observe the bias variance trade-off of a given regression model to understand where our model begins to overfit to the training data. Understanding the bias variance trade-off allows us to study the relationship between model complexity and the test MSE score of our model, aiding in model selection. In this paper, we will compare the bias variance trade-offs of ordinary least squares and ridge regression methods, along with neural networks and decision trees applied for regression. We want to see how far we can push the complexities of our models without overfitting, along with understanding which model can provide the lowest MSE of the test data.
+
+First, we will explain the theory and method used in this paper, followed up by a critical discussion of our results. Finally, we will write a conclusion summarizing our core results and lessons.
+
+\end{document}
