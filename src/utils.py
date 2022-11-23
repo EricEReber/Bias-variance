@@ -238,6 +238,18 @@ def evaluate_model(
 
     return beta, z_pred_train, z_pred_test, z_pred
 
+def sci_bootstrap(X_train, X_test, z_train, z_test, bootstraps, scikit_model):
+
+    z_preds_test = np.empty((z_test.shape[0], bootstraps))
+
+    for i in range(bootstraps):
+        X_, z_ = resample(X_train, z_train)
+        scikit_model.fit(X_, z_)
+        z_pred_test = scikit_model.predict(X_test)
+        z_preds_test[:, i] = z_pred_test
+
+    return z_preds_test
+
 
 def minmax_dataset(X, X_train, X_test, z, z_train, z_test):
     x_scaler = MinMaxScaler()

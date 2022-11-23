@@ -1,9 +1,13 @@
 import seaborn as sns
 
 from utils import *
+
 np.random.seed(2022)
 
 # get data
+"""
+This script plots the bias variance trade-off for OLS providing up to a 9th degree polynomial approximation of the Franke function 
+"""
 (
     betas_to_plot,
     N,
@@ -19,14 +23,15 @@ np.random.seed(2022)
     z,
 ) = read_from_cmdline()
 
+# define run
 N = 20
 bootstraps = 100
 sci_OLS = LinearRegression(fit_intercept=False)
 centering = False
 
-errors = np.zeros(N+1)
-biases = np.zeros(N+1)
-variances = np.zeros(N+1)
+errors = np.zeros(N + 1)
+biases = np.zeros(N + 1)
+variances = np.zeros(N + 1)
 
 # for polynomial degree
 for n in range(N + 1):
@@ -48,6 +53,7 @@ for n in range(N + 1):
     errors[n] = error
     biases[n] = bias
     variances[n] = variance
+
 # plot
 sns.set(font_scale=3)
 plt.title("Bias variance trade-off OLS")

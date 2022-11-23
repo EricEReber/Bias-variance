@@ -4,6 +4,9 @@ from utils import *
 
 np.random.seed(2022)
 
+"""
+This script plots the bias variance trade-off for Ridge providing up to a 9th degree polynomial approximation of the Franke function with different values for the regularization hyperparameter
+"""
 # get data
 (
     betas_to_plot,
@@ -20,17 +23,20 @@ np.random.seed(2022)
     z,
 ) = read_from_cmdline()
 
-N = 50
+# define run
+N = 20
 bootstraps = 100
-lams = np.logspace(-9, 1, 6)
+lams = np.logspace(-14, 1, 6)
 lams[0] = 0
 centering = True
 
 sns.set(font_scale=1.5)
+
+# for lambdas
 for i in range(len(lams)):
     sci_ridge = Ridge(alpha=lams[i], fit_intercept=False)
     plt.suptitle("Bias variance trade-off Ridge", size=32)
-    plt.subplot(321+i)
+    plt.subplot(321 + i)
     errors = np.zeros(N + 1)
     biases = np.zeros(N + 1)
     variances = np.zeros(N + 1)
@@ -48,7 +54,7 @@ for i in range(len(lams)):
             bootstraps,
             centering=centering,
             model=sci_ridge,
-            lam=lams[i]
+            lam=lams[i],
         )
 
         # bias-variance trade-off
