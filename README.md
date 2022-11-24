@@ -1,4 +1,4 @@
-# Project 2 FYS-STK 3155
+# Optional task in Project 3 FYS-STK 3155
 
 This is the repo for the optional task in FYS-STK3155 - Applied data analysis and Machine Learning. It involves comparing the bias-variance tradeoff for Linear Regression methods, Feed Forward Neural Networks and Random Forests.
 
