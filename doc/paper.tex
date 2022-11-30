@@ -57,7 +57,8 @@
 
 
 \section{Abstract}
-Comparing the different regression methods of OLS and ridge regression, we found the regularization provided by ridge regression to decrease our MSE by 14\% by studying the bias variance trade-off of these methods. Regularization was sufficient for delaying overfitting, but a too large regularization value could increase the MSE unnecessarily. Furthermore, decision trees yielded poor results for our regression problem, more than doubling the MSE of our results found by ridge regression. We turned to neural networks, which were also unable to beat the results obtained with ridge regression even when using a very complex architecture consisting of 5 hidden layers. Ridge regression took the crown with an MSE of 0.0031.
+
+We compared linear regression, Neural Networks and Random Forests in their ability to fit the Franke Function without overfitting. This was done by comparing the bias variance tradeoff for each of the models. Comparing the different regression methods of OLS and ridge regression, we found the regularization provided by ridge regression decreased our MSE by $14\%$, providing both a low bias and variance. Regularization was sufficient for delaying overfitting, but a too large regularization value could increase the bias unnecessarily. Furthermore, decision trees yielded poor results for our regression problem, more than doubling the MSE of our results found by ridge regression and exhibiting high variance. We turned to neural networks, which were also unable to beat the results obtained with ridge regression even when using a very complex architecture consisting of 5 hidden layers. Ridge regression took the crown with an MSE of $0.0031$.
 
 \section{Introduction}
 In regression, we wish to create a general model that provides a low MSE even for data that it was not trained on. To study this attribute, we observe the bias variance trade-off of a given regression model to understand where our model begins to overfit to the training data. Understanding the bias variance trade-off allows us to study the relationship between model complexity and the test MSE score of our model, aiding in model selection. In this paper, we will compare the bias variance trade-offs of ordinary least squares and ridge regression methods, along with neural networks and decision trees applied for regression. We want to see how far we can push the complexities of our models without overfitting, along with understanding which model can provide the lowest MSE of the test data.
@@ -68,7 +69,7 @@ First, we will explain the theory and method used in this paper, followed up by 
 
 \subsection{Theory}
 
-This sections covers the theoretic background which underlies the methods used in this paper.
+This section covers the theoretic background which underlies the methods used in this paper.
 
 \subsubsection{Linear Regression}
 
@@ -83,7 +84,7 @@ Here, $X$ is our design matrix, containing our explanatory variables, our featur
 
 \subsubsection{Ridge Regression}
 
-A common problem with OLS is what is known as overfitting (we will discuss this in greater detail in later sections). A symptom of overfitting is that the values in the parameter vector $\bm{\beta}$ grow very large, and vary wildly for small changes in our dataset. To counteract this, we can add to the cost function a term which increases with the values in $\bm{\beta}$. Optimizing the cost function would now not only mean finding the smallest difference between target and predicted values, but also minimizing the absolute value of the parameters. We now define a new cost function
+A common problem with OLS is what is known as overfitting. A symptom of overfitting is that the values in the parameter vector $\bm{\beta}$ grow very large, and vary wildly for small changes in our dataset. To counteract this, we can add to the cost function a term which increases with the values in $\bm{\beta}$. Optimizing the cost function would now not only mean finding the smallest difference between target and predicted values, but also minimizing the absolute value of the parameters. We now define a new cost function
 
 \begin{equation}
 	C_{lasso}(\bm{\beta}) = \sum_{i=0}^{n-1}(y_i-X_{i*}\bm{\beta})^2 + \lambda \sum_{j=0}^{p-1} \beta_j^2
@@ -97,16 +98,14 @@ For some problems, it is sufficient to choose a set of basis functions and find 
 
 To learn any arbitrary relationship between our features may at first seem like an intractable problem, but we are actually able to achieve this with relatively small changes to our linear regression methods. Instead of having our prediction vector be a linear combination of our input vector, we use the linear combinations of the inputs to create an intermediate vector, and apply an activation function to this vector. The resulting values from this function are either passed to the output as a linear combination again, or sent to another intermediate vector. By having the activation function be a nonlinear function, such as the sigmoid or RELU function, we are able to approximate any continous function to arbitrary accuracy \cite[230]{cmb}. By introducing these intermediate vectors, we have created a layered structure, where information is fed forward from layer to layer. Because of this, we call this model a Multilayer Perceptron or a Feedforward Neural Network.
 
-Mathematically, each node on a layer is a linear combination of all the nodes of the previous layer, fed into the activation function for the current layer.
-
 \subsubsection{Decision trees}
-A decision tree will split our dataset, the predictor space, into different non-overlapping areas for which we will make the yield the same prediction for every observation that falls into this area. The prediction will be the average of the observations present in the area during training. The areas, or regions, are chosen to minimize the MSE. The decision tree has an advantage of being very intuitive and explainable, as the observations are placed into these regions using simple conditions.
+A decision tree will split our dataset, the predictor space, into different non-overlapping areas for which we will yield the same prediction for every observation that falls into this area. The prediction will be the average of the observations present in the area during training. The areas, or regions, are chosen to minimize the MSE. The decision tree has an advantage of being very intuitive and explainable, as the observations are placed into these regions using simple conditions.
 
 \subsubsection{Bootstrap}
 
 Bootstrap is a resampling method divided into simple steps. First, we reshuffle our dataset with replacement, which will provide us with a new dataset. Note that we will already have split our data into train and test data before we begin the bootstrap, so when we reshuffle, we will only reshuffle the training data. The reshuffled datasets act as our samples.
 
-Secondly, we will perform our linear regression on this new dataset and store the predictions of the test data. Thirdly, we repeat for a given large number of iterations. Since we use all the test predictions to calculate the MSE, bias and variance, we will then according to the central limit theorem \cite{CLT} obtain a normal distribution of these performance metrics. The law of large numbers \cite{LLN} then tells us that the mean sample values of the MSE, bias and variance approach the true value of MSE, bias and variance. This is dependent on our assumption that our data is independently and identically distributed.
+Secondly, we will perform our regression on this new dataset and store the predictions of the test data. Thirdly, we repeat for a given large number of iterations. Since we use all the test predictions to calculate the MSE, bias and variance, we will then according to the central limit theorem \cite{CLT} obtain a normal distribution of these performance metrics. The law of large numbers \cite{LLN} then tells us that the mean sample values of the MSE, bias and variance approach the true value of MSE, bias and variance. This is dependent on our assumption that our data is independently and identically distributed.
 
 These approximations of the true value of MSE, bias and variance will become useful when performing our bias-variance trade-off analysis.
 
@@ -120,17 +119,13 @@ A good rule of thumb for finding a good fit is looking at the intercept between 
 
 Our implementation can be found at \texttt{https://github.com/EricEReber/Bias-variance.git}.
 
-To obtain a valid comparison accross the various regression methods, we used methods found in scikit learn's machine learning library such as  LinearRegression, Ridge, MLPRegressor and DecisionTreeRegressor. We specify the model we wish to use such that it outputs a mean squared error as it increases in complexity. The complexity for OLS and ridge is the polynomial degree up to which we create the design matrix, the model complexity for the feed forward neural network is the amount of hidden nodes in our hidden layers, and the complexity in the decision tree is represented by its depth. For the feed forward neural network we implemented both one and two hidden layers, and distributed the hidden nodes equally across the layers. The feed forward neural network is trained for 2000 epochs using the logistic activation function and the adam scheduler.
+To obtain a valid comparison accross the various regression methods, we used methods found in scikit learn's machine learning library such as  LinearRegression, Ridge, MLPRegressor and DecisionTreeRegressor. We specify the model we wish to use such that it outputs a mean squared error as it increases in complexity. The complexity for OLS and ridge is the polynomial degree up to which we create the design matrix, the model complexity for the feed forward neural network is the amount of hidden nodes in our hidden layers, and the complexity in the decision tree is represented by its depth. For the feed forward neural network we implemented both one and five hidden layers, and distributed the hidden nodes equally across the layers. The feed forward neural network is trained for 2000 epochs using the logistic activation function and the adam scheduler.
 
 Each model is bootstrapped using our own wrapper function for 100 bootstraps.
 
-\subsection{Datasets}
-
-Below is a short description of each dataset used in this report, along with a table (Table.~\ref{datasettable}) listing their characteristics.
-
 \subsubsection{Franke Function}
 
-The Franke Function is a simple weighted sum of exponentials, taking two inputs and returning a real value. It is commonly used to test machine learning algorithms for regression problems. For OLS and ridge regression, our training data will be based on a 9th degree polynomial fit of the Franke Function, with 56 features. For the feed forward neural network and decision tree, we will use the x and y values directly. The Franke Function is defined as follows.
+The Franke Function is a simple weighted sum of exponentials, taking two inputs and returning a real value. It is commonly used to test machine learning algorithms for regression problems.
 
 
 \begin{multline}
@@ -143,7 +138,7 @@ In practice, to better test our models ability to generalize and to mimic real t
 
 \section{Results}
 
-\begin{figure}[H]
+\begin{figure}[h]
 \centerline{\includegraphics[width=5in]{figs/BV_OLS.png}}
 \caption{Bias variance trade-off for ordinary least squares linear regression. Y axis represents model complexity as polynomial degrees.}
 \label{OLS}
@@ -173,7 +168,7 @@ Looking at a completely different way of performing our regression, the decision
 \label{ffnn1}
 \end{figure}
 
-For the feed forward neural network, we can see from (Fig.~\ref{ffnn1}) that a FFNN with one hidden layer will overfit when the hidden layer contains over 80 hidden nodes. The test MSE reaches a minimum of 0.022, a whole order of magnitude worse than our previous results. Unsatisfied with this result, we turn to an architecture with more hidden layers in a persuit of a lower MSE. Strangely, the cause of the MSE increasing for hidden node counts greater than 80 is a large increase in the bias. Typically, the bias will start high and go downwards as the model complexity increases. This might be because the FFNN simplifies the relationship learned to describe the pattern, increasing the bias. The variance does also increase however, but not as much as the bias.
+For the feed forward neural network, we can see from (Fig.~\ref{ffnn1}) that a FFNN with one hidden layer will overfit when the hidden layer contains over 80 hidden nodes. The test MSE reaches a minimum of 0.022, a whole order of magnitude worse than our previous results. Strangely, the cause of the MSE increasing for hidden node counts greater than 80 is a large increase in the bias. Typically, the bias will start high and go downwards as the model complexity increases. This might be because the FFNN simplifies the relationship learned to describe the pattern, increasing the bias. The variance does also increase however, but not as much as the bias. Unsatisfied with this result, we turn to an architecture with more hidden layers in a pursuit of a lower MSE.
 
 \begin{figure}[H]
 \centerline{\includegraphics[width=5in]{figs/BV_ffnn5.png}}
@@ -206,7 +201,7 @@ Figure & Shell command \\
 \ref{Ridge} & \texttt{python3 ridge\_bias\_variance.py}\\
 \ref{tree} & \texttt{python3 decision\_tree\_bias\_variance.py}\\
 \ref{ffnn1} & \texttt{python3 ffnn\_bias\_variance.py}\\
-\ref{ffnn2} & \texttt{python3 ffnn\_bias\_variance.py}\\
+\ref{ffnn5} & \texttt{python3 ffnn\_bias\_variance.py}\\
 \hline
 \end{tabular}
 \end{center}
