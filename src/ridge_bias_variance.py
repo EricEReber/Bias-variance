@@ -45,16 +45,13 @@ for i in range(len(lams)):
     for n in range(N + 1):
         print(n)
         l = int((n + 1) * (n + 2) / 2)  # Number of elements in beta
-        z_preds, _ = bootstrap(
-            X[:, :l],
+        z_preds = sci_bootstrap(
             X_train[:, :l],
             X_test[:, :l],
             z_train,
             z_test,
             bootstraps,
-            centering=centering,
-            model=sci_ridge,
-            lam=lams[i],
+            sci_ridge,
         )
 
         # bias-variance trade-off
